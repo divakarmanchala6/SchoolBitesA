@@ -1,6 +1,11 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
-  }
+    "jsx": "react-native", // Enables JSX in React Native projects
+    "lib": ["esnext"],      // Includes the latest JavaScript features
+    "target": "esnext",     // Target output for latest JavaScript
+    "module": "esnext",     // Module system for ES Modules
+    "skipLibCheck": true,   // Optional: Speeds up compilation
+    "strict": true,         // Optional: Enables stricter type-checking
+  },
 }
