@@ -36,14 +36,17 @@ const AdminMenuItemsScreen = () => {
         <Text style={styles.menuPrice}>₹{item.menuPrice}</Text>
       </View>
       <View style={styles.buttonIconsContainer}>
-        <TouchableOpacity style={styles.buttonIcon}>
+        <TouchableOpacity
+          style={styles.buttonIcon}
+          onPress={() => navigation.navigate("Add Item", { menuItem: item })}
+        >
           <Feather name="edit" size={28} color="#008080" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.buttonIcon}
           onPress={() => onPressDeleteItem(item.id)}
         >
-          <MaterialCommunityIcons name="delete" size={32} color="#DC143C" />
+          <MaterialCommunityIcons name="delete" size={32} color="#e74c3c" />
         </TouchableOpacity>
       </View>
     </View>

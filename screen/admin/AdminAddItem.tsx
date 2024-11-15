@@ -9,24 +9,35 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { addMenuItem } from "../../utils/storage";
+import { addMenuItem, updateMenuItem } from "../../utils/storage";
 
 const AddExpense = () => {
   const [menuTitle, setMenuTitle] = useState("");
   const [menuPrice, setMenuPrice] = useState("");
-
   const navigation = useNavigation();
   const route = useRoute();
+  const { menuItem } = route.params || {};
+
+  useEffect(() => {
+    if (menuItem) {
+      setMenuTitle(menuItem.menuTitle);
+      setMenuPrice(menuItem.menuPrice);
+    }
+  }, [menuItem]);
 
   const handleOnMenuItem = async () => {
     try {
-      const newItem = {
-        id: uuid.v4(),
-        menuTitle,
-        menuPrice,
-      };
-      await addMenuItem(newItem);
-      navigation.navigate("Home");
+      if (menuItem) {
+        await updateMenuItem({ ...menuItem, menuTitle, menuPrice });
+      } else {
+        const newItem = {
+          id: uuid.v4(),
+          menuTitle,
+          menuPrice,
+        };
+        await addMenuItem(newItem);
+      }
+      navigation.navigate("Home", { updateState: "items" });
     } catch (e) {
       Alert.alert(
         "Error",
@@ -53,7 +64,9 @@ const AddExpense = () => {
         autoCorrect={false} // Disable auto-correction
       />
       <TouchableOpacity style={styles.button} onPress={handleOnMenuItem}>
-        <Text style={styles.buttonText}>Add To Menu</Text>
+        <Text style={styles.buttonText}>
+          {menuItem ? "Update To Menu" : "Add To Menu"}
+        </Text>
       </TouchableOpacity>
     </View>
   );

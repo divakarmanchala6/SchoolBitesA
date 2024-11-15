@@ -7,12 +7,17 @@ import {
   ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
 import AdminMenuItemsScreen from "./AdminMenuItemsScreen";
+import AdminOrdersScreen from "./AdminOrdersScreen";
 
 const AdminScreen = () => {
-  const [activeTab, setActiveTab] = useState("orders");
+  const route = useRoute();
+  const { updateState } = route.params || {};
+  const [activeTab, setActiveTab] = useState(
+    updateState ? updateState : "orders"
+  );
   const navigation = useNavigation();
 
   const onPressAdminItemsButton = () => {
@@ -54,9 +59,13 @@ const AdminScreen = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{ flex: 1 }}>
-          <AdminMenuItemsScreen />
-        </View>
+        {activeTab === "items" ? (
+          <View style={{ flex: 1 }}>
+            <AdminMenuItemsScreen />
+          </View>
+        ) : (
+          <AdminOrdersScreen />
+        )}
       </View>
     </SafeAreaView>
   );
@@ -64,7 +73,7 @@ const AdminScreen = () => {
 
 const styles = StyleSheet.create({
   adminMainContainer: {
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#ffffff",
     padding: 15,
     flex: 1,
   },
@@ -99,21 +108,20 @@ const styles = StyleSheet.create({
   },
   ordersButton: {
     borderRadius: 10,
-    borderColor: "#140940",
     width: 100,
     marginRight: 5,
     marginLeft: 5,
     paddingBottom: 3,
   },
   buttonsText: {
-    color: "#140940",
+    color: "#e74c3c",
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 22,
   },
   activeTab: {
     borderBottomWidth: 4,
-    borderColor: "#140940",
+    borderColor: "#e74c3c",
   },
   addButtonContainer: {
     position: "absolute",
