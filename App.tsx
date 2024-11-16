@@ -1,12 +1,23 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  StackNavigationProp,
+} from "@react-navigation/stack";
 import AdminScreen from "./screen/admin/AdminScreen";
 import AdminAddItem from "./screen/admin/AdminAddItem";
 import StudentScreen from "./screen/student/StudentScreen";
 import SideNav from "./screen/SideNav";
 
-const Stack = createStackNavigator();
+// Define the stack parameter list type
+type RootStackParamList = {
+  Home: undefined;
+  "Add Item": undefined;
+  "Student Home": undefined;
+  Profile: undefined;
+};
+
+const Stack = createStackNavigator<RootStackParamList>();
 
 function App() {
   return (

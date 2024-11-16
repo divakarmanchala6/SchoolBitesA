@@ -2,8 +2,14 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
-const SideNav = () => {
-  const navigation = useNavigation();
+// Define types for navigation if needed
+type NavigationProp = {
+  navigate: (screen: string) => void;
+};
+
+const SideNav: React.FC = () => {
+  const navigation = useNavigation<NavigationProp>(); // Type the navigation hook
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -29,7 +35,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    backgroundColor: "#ef4f5f", // Blue color
+    backgroundColor: "#ef4f5f", // Red color
     paddingVertical: 15,
     paddingHorizontal: 40,
     borderRadius: 10,

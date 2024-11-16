@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import uuid from "react-native-uuid";
 import {
   View,
@@ -11,11 +11,21 @@ import {
 } from "react-native";
 import { addMenuItem, updateMenuItem } from "../../utils/storage";
 
-const AddExpense = () => {
-  const [menuTitle, setMenuTitle] = useState("");
-  const [menuPrice, setMenuPrice] = useState("");
+// Define the types for the route parameters
+type RootStackParamList = {
+  Home: { updateState: string };
+  AddExpense: {
+    menuItem?: { id: string; menuTitle: string; menuPrice: string };
+  };
+};
+
+type AddExpenseRouteProp = RouteProp<RootStackParamList, "AddExpense">;
+
+const AddExpense: React.FC = () => {
+  const [menuTitle, setMenuTitle] = useState<string>("");
+  const [menuPrice, setMenuPrice] = useState<string>("");
   const navigation = useNavigation();
-  const route = useRoute();
+  const route = useRoute<AddExpenseRouteProp>();
   const { menuItem } = route.params || {};
 
   useEffect(() => {
@@ -31,7 +41,7 @@ const AddExpense = () => {
         await updateMenuItem({ ...menuItem, menuTitle, menuPrice });
       } else {
         const newItem = {
-          id: uuid.v4(),
+          id: uuid.v4() as string,
           menuTitle,
           menuPrice,
         };
@@ -41,9 +51,9 @@ const AddExpense = () => {
     } catch (e) {
       Alert.alert(
         "Error",
-        "An error occurred while saving the expense in addExpense Screen"
+        "An error occurred while saving the expense in AddExpense Screen"
       );
-      console.error(error);
+      console.error(e);
     }
   };
 

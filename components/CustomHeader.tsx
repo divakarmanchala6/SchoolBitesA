@@ -2,8 +2,13 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
-const CustomHeader = () => {
-  const navigation = useNavigation();
+type NavigationProp = {
+  navigate: (screen: string) => void;
+};
+
+const CustomHeader: React.FC = () => {
+  const navigation = useNavigation<NavigationProp>(); // Type the navigation hook
+
   return (
     <View style={styles.container}>
       <TouchableOpacity

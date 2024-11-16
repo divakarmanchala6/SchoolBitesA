@@ -95,15 +95,13 @@ const StudentCartScreen = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      {cartItems.length === 0 && (
-        <View style={styles.emtpyCartContainer}>
-          <Text style={styles.emptyCartText}>Your Cart Empty</Text>
-        </View>
-      )}
       <FlatList
         data={cartItems}
         renderItem={renderCarItem}
         keyExtractor={(item) => item.id}
+        ListEmptyComponent={
+          <Text style={styles.emptyText}>Add items from Menu</Text>
+        }
       />
       {cartItems.length > 0 && (
         <View style={styles.addButtonContainer}>
@@ -183,6 +181,12 @@ const styles = StyleSheet.create({
   },
   addButtonIcon: {
     marginLeft: 5,
+  },
+  emptyText: {
+    textAlign: "center",
+    fontSize: 18,
+    marginTop: 180,
+    color: "#e74c3c",
   },
 });
 

@@ -1,26 +1,28 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Entypo } from "@expo/vector-icons";
+import CustomHeader from "../../components/CustomHeader";
 import AdminMenuItemsScreen from "./AdminMenuItemsScreen";
 import AdminOrdersScreen from "./AdminOrdersScreen";
-import CustomHeader from "../../components/CustomHeader";
 
 const AdminScreen = () => {
   const route = useRoute();
   const { updateState } = route.params || {};
-  const [activeTab, setActiveTab] = useState(
-    updateState ? updateState : "orders"
-  );
+  const [activeTab, setActiveTab] = useState(updateState || "orders");
   const navigation = useNavigation();
 
-  const onPressAdminItemsButton = () => {
-    setActiveTab("items");
+  // Handle button press to toggle active tab
+  const handleTabPress = (tab) => {
+    setActiveTab(tab);
   };
 
-  const onPressAdminOrdersButton = () => {
-    setActiveTab("orders");
+  // Render the active screen based on selected tab
+  const renderActiveTabScreen = () => {
+    if (activeTab === "items") {
+      return <AdminMenuItemsScreen />;
+    }
+    return <AdminOrdersScreen />;
   };
 
   return (
@@ -40,7 +42,7 @@ const AdminScreen = () => {
                 styles.ordersButton,
                 activeTab === "items" && styles.activeTab,
               ]}
-              onPress={onPressAdminItemsButton}
+              onPress={() => handleTabPress("items")}
             >
               <Text style={styles.buttonsText}>Items</Text>
             </TouchableOpacity>
@@ -49,19 +51,14 @@ const AdminScreen = () => {
                 styles.ordersButton,
                 activeTab === "orders" && styles.activeTab,
               ]}
-              onPress={onPressAdminOrdersButton}
+              onPress={() => handleTabPress("orders")}
             >
               <Text style={styles.buttonsText}>Orders</Text>
             </TouchableOpacity>
           </View>
         </View>
-        {activeTab === "items" ? (
-          <View style={{ flex: 1 }}>
-            <AdminMenuItemsScreen />
-          </View>
-        ) : (
-          <AdminOrdersScreen />
-        )}
+        {/* Render the content of the active tab */}
+        {renderActiveTabScreen()}
       </View>
     </SafeAreaView>
   );
@@ -78,9 +75,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#ef4f5f",
     justifyContent: "center",
-    textAlign: "left",
-    marginBottom: 20,
     padding: 20,
+    marginBottom: 20,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
@@ -91,7 +87,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "500",
     textAlign: "left",
-    fontFamily: "Roboto",
     lineHeight: 25,
   },
   adminSectionContainer: {
@@ -105,8 +100,7 @@ const styles = StyleSheet.create({
   ordersButton: {
     borderRadius: 10,
     width: 100,
-    marginRight: 5,
-    marginLeft: 5,
+    marginHorizontal: 5,
     paddingBottom: 3,
   },
   buttonsText: {
@@ -118,35 +112,6 @@ const styles = StyleSheet.create({
   activeTab: {
     borderBottomWidth: 4,
     borderColor: "#e74c3c",
-  },
-  addButtonContainer: {
-    position: "absolute",
-    bottom: 20,
-    left: 0,
-    right: 0,
-    alignItems: "center",
-  },
-  addButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: "#e74c3c",
-    backgroundColor: "#fff5f5",
-    height: 40,
-    width: 90,
-  },
-  addButtonText: {
-    color: "#e74c3c",
-    fontSize: 16,
-    fontWeight: "bold",
-    marginRight: 5,
-  },
-  addButtonIcon: {
-    marginLeft: 5,
   },
 });
 

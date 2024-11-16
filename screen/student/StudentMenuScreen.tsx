@@ -68,6 +68,9 @@ const StudentMenuScreen = () => {
         data={studentMenuItems}
         renderItem={renderMenuItems}
         keyExtractor={(item) => item.id}
+        ListEmptyComponent={
+          <Text style={styles.emptyText}>Menu items are on the way</Text>
+        }
       />
     </View>
   );
@@ -125,6 +128,15 @@ const styles = StyleSheet.create({
   },
   addButtonIcon: {
     marginLeft: 5,
+  },
+  emptyText: {
+    textAlign: "center",
+    fontSize: 18,
+    color: "#e74c3c",
+  },
+  emptyMenuContainer: {
+    flex: 1,
+    marginBottom: 300,
   },
 });
 

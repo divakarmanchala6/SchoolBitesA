@@ -9,8 +9,6 @@ import {
 
 const AdminOrderScreen = () => {
   const [orders, setOrders] = useState([]);
-  const [currentOrders, setCurrentOrders] = useState([]);
-  const [pastOrders, setPastOrders] = useState([]);
   const [selectedValue, setSelectedValue] = useState("");
 
   useEffect(() => {
@@ -21,52 +19,37 @@ const AdminOrderScreen = () => {
     fetchOrders();
   }, []);
 
-  useEffect(() => {
-    if (Array.isArray(orders)) {
-      setCurrentOrders(
-        orders.filter((order) => order.orderStatus === "ordered")
-      );
-      setPastOrders(orders.filter((order) => order.orderStatus === "prepared"));
-    } else {
-      console.error("Orders is not an array:", orders);
-    }
-  }, []);
-
   const onPressDeleteOrder = (id) => {
     deleteOrderItem(id);
     const filteredOrders = orders.filter((item) => item.id !== id);
     setOrders(filteredOrders);
   };
 
-  const fetchOrders = async () => {
-    const items = await loadOrderItems();
-    setOrders(items);
-  };
-
-  const renderOrderUpdate = (id, currentStatus) => {
-    const handleOrderUpdate = async (value) => {
-      await updateOrderStatus(id, value);
-      fetchOrders();
-    };
-
-    return (
-      <View style={styles.container}>
-        <Text style={styles.label}>Update Order Status:</Text>
-        <RNPickerSelect
-          onValueChange={(value) => handleOrderUpdate(value)}
-          items={[
-            { label: "Ordered", value: "ordered" },
-            { label: "Received", value: "received" },
-            { label: "Picked", value: "picked" },
-            { label: "Prepared", value: "prepared" },
-          ]}
-          placeholder={{ label: "Select Status", value: null }}
-          value={currentStatus} // Set the default value
-          style={pickerSelectStyles}
-        />
-      </View>
+  const handleOrderUpdate = async (id, value) => {
+    await updateOrderStatus(id, value);
+    const updatedOrders = orders.map((order) =>
+      order.id === id ? { ...order, orderStatus: value } : order
     );
+    setOrders(updatedOrders);
   };
+
+  const renderOrderUpdate = (id, currentStatus) => (
+    <View style={styles.orderStatusContainer}>
+      <Text style={styles.label}>Update Order Status:</Text>
+      <RNPickerSelect
+        onValueChange={(value) => handleOrderUpdate(id, value)}
+        items={[
+          { label: "Ordered", value: "ordered" },
+          { label: "Received", value: "received" },
+          { label: "Picked", value: "picked" },
+          { label: "Prepared", value: "prepared" },
+        ]}
+        placeholder={{ label: "Select Status", value: null }}
+        value={currentStatus} // Set the default value
+        style={pickerSelectStyles}
+      />
+    </View>
+  );
 
   const renderOrderCard = ({ item }) => (
     <View style={styles.card}>
@@ -110,9 +93,9 @@ const pickerSelectStyles = StyleSheet.create({
     paddingRight: 30,
   },
   inputAndroid: {
+    backgroundColor: "#f5f5f5",
     fontSize: 16,
     paddingHorizontal: 10,
-    paddingVertical: 8,
     borderWidth: 1,
     borderColor: "gray",
     borderRadius: 4,
@@ -149,9 +132,9 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     textAlign: "center",
-    marginTop: 10,
-    fontStyle: "italic",
-    color: "#888",
+    fontSize: 18,
+    marginTop: 180,
+    color: "#e74c3c",
   },
   label: {
     fontSize: 18,
@@ -160,6 +143,10 @@ const styles = StyleSheet.create({
   selectedText: {
     marginTop: 20,
     fontSize: 16,
+  },
+
+  orderStatusContainer: {
+    marginTop: 10,
   },
 });
 

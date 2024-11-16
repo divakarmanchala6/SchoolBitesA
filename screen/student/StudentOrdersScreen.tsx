@@ -5,7 +5,6 @@ import { deleteOrderItem, loadOrderItems } from "../../utils/storage";
 
 const StudentOrdersScreen = () => {
   const [orders, setOrders] = useState([]);
-  console.log(orders.length);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -35,13 +34,11 @@ const StudentOrdersScreen = () => {
         <Text>Order Statu: </Text>
         <Text style={{ textTransform: "capitalize" }}>{item.orderStatus}</Text>
       </View>
-      <Button title="delete" onPress={() => onPressDeleteOrder(item.id)} />
     </View>
   );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.sectionTitle}>Current Orders</Text>
       <FlatList
         data={orders}
         renderItem={renderOrderCard}
@@ -81,10 +78,10 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   emptyText: {
+    marginTop: 100,
     textAlign: "center",
-    marginTop: 10,
-    fontStyle: "italic",
-    color: "#888",
+    fontSize: 18,
+    color: "#e74c3c",
   },
   orderStatusContainer: {
     flexDirection: "row",

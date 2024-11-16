@@ -10,26 +10,38 @@ import {
 import { deleteMenuItem, loadMenuItems } from "../../utils/storage";
 import { Feather, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 
-const AdminMenuItemsScreen = () => {
-  const [menuItems, setMenuItems] = useState([]);
+// Define the type for menu item
+type MenuItem = {
+  id: string;
+  menuTitle: string;
+  menuPrice: string;
+};
 
-  const navigation = useNavigation();
+// Define the type for navigation props
+type AdminMenuItemsScreenNavigationProp = {
+  navigate: (screen: string, params?: { menuItem?: MenuItem }) => void;
+};
+
+const AdminMenuItemsScreen: React.FC = () => {
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+
+  const navigation = useNavigation<AdminMenuItemsScreenNavigationProp>();
 
   useEffect(() => {
-    const fetchMenuItem = async () => {
+    const fetchMenuItems = async () => {
       const items = await loadMenuItems();
       setMenuItems(items);
     };
-    fetchMenuItem();
+    fetchMenuItems();
   }, []);
 
-  const onPressDeleteItem = async (id) => {
+  const onPressDeleteItem = async (id: string) => {
     await deleteMenuItem(id);
     const updatedMenuItems = menuItems.filter((item) => item.id !== id);
     setMenuItems(updatedMenuItems);
   };
 
-  const renderMenuItem = ({ item }) => (
+  const renderMenuItem = ({ item }: { item: MenuItem }) => (
     <View style={styles.menuItemContainer}>
       <View style={styles.menuItemDetails}>
         <Text style={styles.menuTitle}>{item.menuTitle}</Text>
@@ -58,6 +70,11 @@ const AdminMenuItemsScreen = () => {
         data={menuItems}
         renderItem={renderMenuItem}
         keyExtractor={(item) => item.id}
+        ListEmptyComponent={
+          <Text style={styles.emptyText}>
+            You can add menu items here by pressing the "Add" button below.
+          </Text>
+        }
       />
       <View style={styles.addButtonContainer}>
         <TouchableOpacity
@@ -130,6 +147,13 @@ const styles = StyleSheet.create({
   },
   addButtonIcon: {
     marginLeft: 5,
+  },
+
+  emptyText: {
+    textAlign: "center",
+    fontSize: 18,
+    marginTop: 180,
+    color: "#e74c3c",
   },
 });
 
