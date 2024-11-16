@@ -13,7 +13,6 @@ import {
   deleteCartItem,
   emptyCartItems,
   addOrderItem,
-  loadOrderItems,
 } from "../../utils/storage";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -58,11 +57,10 @@ const StudentCartScreen = () => {
         orderedBy: randomNames[Math.floor(Math.random() * randomNames.length)],
       };
 
-      await addOrderItem(orderItem);
-      const updatedOrders = await loadOrderItems();
-      setOrders(updatedOrders);
-      await emptyCartItems();
+      setOrders([...orders, orderItem]);
       setCartItems([]);
+      await addOrderItem(orderItem);
+      await emptyCartItems();
       Alert.alert("Success", "Your order has been placed successfully!");
     } catch (error) {
       Alert.alert(

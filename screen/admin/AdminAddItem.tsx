@@ -107,7 +107,9 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   button: {
-    backgroundColor: "#00bef9",
+    borderColor: "#e74c3c",
+    backgroundColor: "#fff5f5",
+    borderWidth: 1,
     paddingVertical: 16,
     borderRadius: 10,
     alignItems: "center",
@@ -118,7 +120,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   buttonText: {
-    color: "#FFFFFF",
+    color: "#e74c3c",
     fontWeight: "600",
     fontSize: 18,
   },

@@ -9,6 +9,7 @@ import {
 import StudentMenuScreen from "./StudentMenuScreen";
 import StudentCartScreen from "./StudentCartScreen";
 import StudentOrdersScreen from "./StudentOrdersScreen";
+import CustomHeader from "../../components/CustomHeader";
 
 const StudentScreen = () => {
   const [activeTab, setActiveTab] = useState("menu");
@@ -27,6 +28,7 @@ const StudentScreen = () => {
 
   return (
     <SafeAreaView style={styles.studentScreenMainContainer}>
+      <CustomHeader />
       <View style={styles.studentTabsContainer}>
         <TouchableOpacity
           style={[
@@ -67,7 +69,8 @@ const styles = StyleSheet.create({
   studentScreenMainContainer: {
     marginTop: 26,
     padding: 10,
-    flex: 1, // Helps take the full screen height
+    flex: 1,
+    backgroundColor: "#ffffff",
   },
   studentTabsContainer: {
     flexDirection: "row",

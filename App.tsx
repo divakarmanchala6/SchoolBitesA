@@ -4,13 +4,14 @@ import { createStackNavigator } from "@react-navigation/stack";
 import AdminScreen from "./screen/admin/AdminScreen";
 import AdminAddItem from "./screen/admin/AdminAddItem";
 import StudentScreen from "./screen/student/StudentScreen";
+import SideNav from "./screen/SideNav";
 
 const Stack = createStackNavigator();
 
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Student Home">
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
           name="Home"
           component={AdminScreen}
@@ -22,6 +23,7 @@ function App() {
           component={StudentScreen}
           options={{ headerShown: false }}
         />
+        <Stack.Screen name="Profile" component={SideNav} />
       </Stack.Navigator>
     </NavigationContainer>
   );

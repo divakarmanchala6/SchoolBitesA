@@ -82,13 +82,21 @@ export const emptyCartItems = async () => {
   }
 };
 
-const ORDER_ITEM_KEY = "ORDERITEM";
+const ORDER_ITEM_KEY = "ORDERS";
 
 export const saveOrderItem = async (orderItem) => {
   try {
     await AsyncStorage.setItem(ORDER_ITEM_KEY, JSON.stringify(orderItem));
   } catch (e) {
     console.log("Failde to save Order Details");
+  }
+};
+
+export const epmptyOrderItmes = async () => {
+  try {
+    await AsyncStorage.setItem(ORDER_ITEM_KEY, JSON.stringify([]));
+  } catch (e) {
+    console.error("Failed to empty cart items");
   }
 };
 

@@ -1,162 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
-import { loadOrderItems } from "../../utils/storage";
-
-const initialOrdersData = [
-  {
-    id: "0bfad197-a321-11ef-b0d5-6bbf600327eabc",
-    items: [
-      {
-        id: "e6c64855-a320-11ef-b0d5-6bbf600327ea",
-        menuPrice: "50",
-        menuTitle: "Idly",
-      },
-      {
-        id: "09bb41d6-a321-11ef-b0d5-6bbf600327ea",
-        menuPrice: "580",
-        menuTitle: "Hola",
-      },
-    ],
-    orderStatus: "ordered",
-    orderedBy: "Divakar Manchala",
-    totalAmount: 630,
-  },
-  {
-    id: "7c5e7c79-a321-11ef-b0d5-6bbf600327eabc",
-    items: [
-      {
-        id: "7b144938-a321-11ef-b0d5-6bbf600327ea",
-        menuPrice: "80",
-        menuTitle: "Vada",
-      },
-    ],
-    orderStatus: "prepared",
-    orderedBy: "Divakar Manchala",
-    totalAmount: 80,
-  },
-  {
-    id: "0bfad197-a321-11ef-b0d5-6bbf600327eac",
-    items: [
-      {
-        id: "e6c64855-a320-11ef-b0d5-6bbf600327ea",
-        menuPrice: "50",
-        menuTitle: "Idly",
-      },
-      {
-        id: "09bb41d6-a321-11ef-b0d5-6bbf600327ea",
-        menuPrice: "580",
-        menuTitle: "Hola",
-      },
-    ],
-    orderStatus: "ordered",
-    orderedBy: "Divakar Manchala",
-    totalAmount: 630,
-  },
-  {
-    id: "7c5e7c79-a321-11ef-b0d5-6bbf600327eac",
-    items: [
-      {
-        id: "7b144938-a321-11ef-b0d5-6bbf600327ea",
-        menuPrice: "80",
-        menuTitle: "Vada",
-      },
-    ],
-    orderStatus: "prepared",
-    orderedBy: "Divakar Manchala",
-    totalAmount: 80,
-  },
-  {
-    id: "0bfad197-a321-11ef-b0d5-6bbf600327eab",
-    items: [
-      {
-        id: "e6c64855-a320-11ef-b0d5-6bbf600327ea",
-        menuPrice: "50",
-        menuTitle: "Idly",
-      },
-      {
-        id: "09bb41d6-a321-11ef-b0d5-6bbf600327ea",
-        menuPrice: "580",
-        menuTitle: "Hola",
-      },
-    ],
-    orderStatus: "ordered",
-    orderedBy: "Divakar Manchala",
-    totalAmount: 630,
-  },
-  {
-    id: "7c5e7c79-a321-11ef-b0d5-6bbf600327eab",
-    items: [
-      {
-        id: "7b144938-a321-11ef-b0d5-6bbf600327ea",
-        menuPrice: "80",
-        menuTitle: "Vada",
-      },
-    ],
-    orderStatus: "prepared",
-    orderedBy: "Divakar Manchala",
-    totalAmount: 80,
-  },
-  {
-    id: "0bfad197-a321-11ef-b0d5-6bbf600327ea",
-    items: [
-      {
-        id: "e6c64855-a320-11ef-b0d5-6bbf600327ea",
-        menuPrice: "50",
-        menuTitle: "Idly",
-      },
-      {
-        id: "09bb41d6-a321-11ef-b0d5-6bbf600327ea",
-        menuPrice: "580",
-        menuTitle: "Hola",
-      },
-    ],
-    orderStatus: "ordered",
-    orderedBy: "Divakar Manchala",
-    totalAmount: 630,
-  },
-  {
-    id: "7c5e7c79-a321-11ef-b0d5-6bbf600327ea",
-    items: [
-      {
-        id: "7b144938-a321-11ef-b0d5-6bbf600327ea",
-        menuPrice: "80",
-        menuTitle: "Vada",
-      },
-    ],
-    orderStatus: "prepared",
-    orderedBy: "Divakar Manchala",
-    totalAmount: 80,
-  },
-]; // Start with an empty array for safety
+import { View, Text, StyleSheet, FlatList, Button } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
+import { deleteOrderItem, loadOrderItems } from "../../utils/storage";
 
 const StudentOrdersScreen = () => {
-  const [orders, setOrders] = useState(initialOrdersData);
+  const [orders, setOrders] = useState([]);
   const [currentOrders, setCurrentOrders] = useState([]);
   const [pastOrders, setPastOrders] = useState([]);
+  console.log(orders.length);
 
   useEffect(() => {
     const fetchOrders = async () => {
-      try {
-        const items = await loadOrderItems();
-        console.log(items);
-        if (Array.isArray(items)) {
-          setOrders(items);
-        } else {
-          console.warn(
-            "loadOrderItems did not return an array. Using fallback data."
-          );
-          setOrders(initialOrdersData); // Fallback to empty array
-        }
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-        setOrders(initialOrdersData); // Fallback to empty array on error
-      }
+      const items = await loadOrderItems();
+      setOrders(items);
     };
     fetchOrders();
   }, []);
 
   useEffect(() => {
-    // Ensure `orders` is an array before filtering
     if (Array.isArray(orders)) {
       setCurrentOrders(
         orders.filter((order) => order.orderStatus === "ordered")
@@ -166,6 +27,12 @@ const StudentOrdersScreen = () => {
       console.error("Orders is not an array:", orders);
     }
   }, []);
+
+  const onPressDeleteOrder = (id) => {
+    deleteOrderItem(id);
+    const filteredOrders = orders.filter((item) => item.id !== id);
+    setOrders(filteredOrders);
+  };
 
   const renderOrderCard = ({ item }) => (
     <View style={styles.card}>
@@ -178,6 +45,7 @@ const StudentOrdersScreen = () => {
       </View>
       <Text>Total Amount: ₹{item.totalAmount}</Text>
       <Text>Order Status: {item.orderStatus}</Text>
+      <Button title="delete" onPress={() => onPressDeleteOrder(item.id)} />
     </View>
   );
 
@@ -185,7 +53,7 @@ const StudentOrdersScreen = () => {
     <View style={styles.container}>
       <Text style={styles.sectionTitle}>Current Orders</Text>
       <FlatList
-        data={currentOrders}
+        data={orders}
         renderItem={renderOrderCard}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={

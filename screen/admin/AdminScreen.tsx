@@ -11,6 +11,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
 import AdminMenuItemsScreen from "./AdminMenuItemsScreen";
 import AdminOrdersScreen from "./AdminOrdersScreen";
+import CustomHeader from "../../components/CustomHeader";
 
 const AdminScreen = () => {
   const route = useRoute();
@@ -29,7 +30,8 @@ const AdminScreen = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+      <CustomHeader />
       <View style={styles.adminMainContainer}>
         <View style={styles.adminQuoteCard}>
           <Text style={styles.quoteText}>
