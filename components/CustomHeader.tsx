@@ -19,7 +19,7 @@ const CustomHeader = () => {
 const styles = StyleSheet.create({
   container: {
     alignItems: "flex-end",
-    marginVertical: 10,
+    marginTop: 10,
     marginRight: 10,
   },
   circleButton: {

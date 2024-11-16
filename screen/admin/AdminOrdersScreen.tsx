@@ -70,7 +70,7 @@ const AdminOrderScreen = () => {
 
   const renderOrderCard = ({ item }) => (
     <View style={styles.card}>
-      <Text>{item.orderedBy}</Text>
+      <Text>Ordered By: {item.orderedBy}</Text>
       <View>
         {item.items.map((menu) => (
           <Text key={menu.id}>

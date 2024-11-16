@@ -117,15 +117,12 @@ export const addOrderItem = async (orderItem) => {
 
 export const updateOrderStatus = async (id, newOrderStatus) => {
   try {
-    // Load existing orders from local storage
     const orderItems = await loadOrderItems();
 
-    // Find and update the specific order by ID
     const updatedOrderItems = orderItems.map((item) =>
       item.id === id ? { ...item, orderStatus: newOrderStatus } : item
     );
 
-    // Save the updated orders back to local storage
     await saveOrderItem(updatedOrderItems);
   } catch (e) {
     console.error("Failed to update Order Status", e);

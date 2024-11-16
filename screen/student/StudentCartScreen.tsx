@@ -95,7 +95,11 @@ const StudentCartScreen = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      {cartItems.length === 0 && <Text>Your Cart Empty</Text>}
+      {cartItems.length === 0 && (
+        <View style={styles.emtpyCartContainer}>
+          <Text style={styles.emptyCartText}>Your Cart Empty</Text>
+        </View>
+      )}
       <FlatList
         data={cartItems}
         renderItem={renderCarItem}
@@ -116,6 +120,17 @@ const StudentCartScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  emtpyCartContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  emptyCartText: {
+    textAlign: "center",
+    fontSize: 22,
+    color: "#e74c3c",
+  },
   menuItemContainer: {
     flexDirection: "row",
     justifyContent: "space-between",

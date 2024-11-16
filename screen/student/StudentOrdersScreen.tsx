@@ -5,8 +5,6 @@ import { deleteOrderItem, loadOrderItems } from "../../utils/storage";
 
 const StudentOrdersScreen = () => {
   const [orders, setOrders] = useState([]);
-  const [currentOrders, setCurrentOrders] = useState([]);
-  const [pastOrders, setPastOrders] = useState([]);
   console.log(orders.length);
 
   useEffect(() => {
@@ -16,19 +14,6 @@ const StudentOrdersScreen = () => {
     };
     fetchOrders();
   }, []);
-
-  useEffect(() => {
-    if (Array.isArray(orders)) {
-      setCurrentOrders(
-        orders.filter((order) => order.orderStatus === "received") // Adjust for your specific case
-      );
-      setPastOrders(
-        orders.filter((order) => order.orderStatus === "prepared") // Adjust for your specific case
-      );
-    } else {
-      console.error("Orders is not an array:", orders);
-    }
-  }, [orders]);
 
   const onPressDeleteOrder = (id) => {
     deleteOrderItem(id);
@@ -46,7 +31,10 @@ const StudentOrdersScreen = () => {
         ))}
       </View>
       <Text>Total Amount: ₹{item.totalAmount}</Text>
-      <Text>Order Status: {item.orderStatus}</Text>
+      <View style={styles.orderStatusContainer}>
+        <Text>Order Statu: </Text>
+        <Text style={{ textTransform: "capitalize" }}>{item.orderStatus}</Text>
+      </View>
       <Button title="delete" onPress={() => onPressDeleteOrder(item.id)} />
     </View>
   );
@@ -55,21 +43,11 @@ const StudentOrdersScreen = () => {
     <View style={styles.container}>
       <Text style={styles.sectionTitle}>Current Orders</Text>
       <FlatList
-        data={currentOrders}
+        data={orders}
         renderItem={renderOrderCard}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={
           <Text style={styles.emptyText}>No current orders.</Text>
-        }
-      />
-
-      <Text style={styles.sectionTitle}>Past Orders</Text>
-      <FlatList
-        data={pastOrders}
-        renderItem={renderOrderCard}
-        keyExtractor={(item) => item.id}
-        ListEmptyComponent={
-          <Text style={styles.emptyText}>No past orders.</Text>
         }
       />
     </View>
@@ -107,6 +85,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontStyle: "italic",
     color: "#888",
+  },
+  orderStatusContainer: {
+    flexDirection: "row",
+    width: "85%",
+    justifyContent: "space-between",
   },
 });
 

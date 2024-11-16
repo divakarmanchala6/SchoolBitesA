@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
@@ -82,7 +76,7 @@ const styles = StyleSheet.create({
   adminQuoteCard: {
     height: 180,
     borderRadius: 10,
-    backgroundColor: "white",
+    backgroundColor: "#ef4f5f",
     justifyContent: "center",
     textAlign: "left",
     marginBottom: 20,
@@ -93,7 +87,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   quoteText: {
-    color: "#333",
+    color: "#fff",
     fontSize: 18,
     fontWeight: "500",
     textAlign: "left",
