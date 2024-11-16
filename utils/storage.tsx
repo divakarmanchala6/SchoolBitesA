@@ -115,6 +115,23 @@ export const addOrderItem = async (orderItem) => {
   await saveOrderItem(orderItems);
 };
 
+export const updateOrderStatus = async (id, newOrderStatus) => {
+  try {
+    // Load existing orders from local storage
+    const orderItems = await loadOrderItems();
+
+    // Find and update the specific order by ID
+    const updatedOrderItems = orderItems.map((item) =>
+      item.id === id ? { ...item, orderStatus: newOrderStatus } : item
+    );
+
+    // Save the updated orders back to local storage
+    await saveOrderItem(updatedOrderItems);
+  } catch (e) {
+    console.error("Failed to update Order Status", e);
+  }
+};
+
 export const deleteOrderItem = async (id) => {
   const orderItems = await loadOrderItems();
   const filteredOrderItems = orderItems.filter((item) => item.id !== id);

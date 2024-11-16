@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
+import RNPickerSelect from "react-native-picker-select";
 import { View, Text, StyleSheet, FlatList, Button } from "react-native";
-import { deleteOrderItem, loadOrderItems } from "../../utils/storage";
+import {
+  deleteOrderItem,
+  loadOrderItems,
+  updateOrderStatus,
+} from "../../utils/storage";
 
 const AdminOrderScreen = () => {
   const [orders, setOrders] = useState([]);
   const [currentOrders, setCurrentOrders] = useState([]);
   const [pastOrders, setPastOrders] = useState([]);
-  console.log(orders.length);
+  const [selectedValue, setSelectedValue] = useState("");
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -33,6 +38,36 @@ const AdminOrderScreen = () => {
     setOrders(filteredOrders);
   };
 
+  const fetchOrders = async () => {
+    const items = await loadOrderItems();
+    setOrders(items);
+  };
+
+  const renderOrderUpdate = (id, currentStatus) => {
+    const handleOrderUpdate = async (value) => {
+      await updateOrderStatus(id, value);
+      fetchOrders();
+    };
+
+    return (
+      <View style={styles.container}>
+        <Text style={styles.label}>Update Order Status:</Text>
+        <RNPickerSelect
+          onValueChange={(value) => handleOrderUpdate(value)}
+          items={[
+            { label: "Ordered", value: "ordered" },
+            { label: "Received", value: "received" },
+            { label: "Picked", value: "picked" },
+            { label: "Prepared", value: "prepared" },
+          ]}
+          placeholder={{ label: "Select Status", value: null }}
+          value={currentStatus} // Set the default value
+          style={pickerSelectStyles}
+        />
+      </View>
+    );
+  };
+
   const renderOrderCard = ({ item }) => (
     <View style={styles.card}>
       <Text>{item.orderedBy}</Text>
@@ -45,6 +80,7 @@ const AdminOrderScreen = () => {
       </View>
       <Text>Total Amount: ₹{item.totalAmount}</Text>
       <Text>Order Status: {item.orderStatus}</Text>
+      {renderOrderUpdate(item.id, item.orderStatus)}
     </View>
   );
 
@@ -61,6 +97,29 @@ const AdminOrderScreen = () => {
     </View>
   );
 };
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: "gray",
+    borderRadius: 4,
+    color: "black",
+    paddingRight: 30,
+  },
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: "gray",
+    borderRadius: 4,
+    color: "black",
+    paddingRight: 30,
+  },
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -93,6 +152,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontStyle: "italic",
     color: "#888",
+  },
+  label: {
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  selectedText: {
+    marginTop: 20,
+    fontSize: 16,
   },
 });
 

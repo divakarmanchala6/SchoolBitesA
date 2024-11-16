@@ -20,13 +20,15 @@ const StudentOrdersScreen = () => {
   useEffect(() => {
     if (Array.isArray(orders)) {
       setCurrentOrders(
-        orders.filter((order) => order.orderStatus === "ordered")
+        orders.filter((order) => order.orderStatus === "received") // Adjust for your specific case
       );
-      setPastOrders(orders.filter((order) => order.orderStatus === "prepared"));
+      setPastOrders(
+        orders.filter((order) => order.orderStatus === "prepared") // Adjust for your specific case
+      );
     } else {
       console.error("Orders is not an array:", orders);
     }
-  }, []);
+  }, [orders]);
 
   const onPressDeleteOrder = (id) => {
     deleteOrderItem(id);
@@ -53,7 +55,7 @@ const StudentOrdersScreen = () => {
     <View style={styles.container}>
       <Text style={styles.sectionTitle}>Current Orders</Text>
       <FlatList
-        data={orders}
+        data={currentOrders}
         renderItem={renderOrderCard}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={
